@@ -1,0 +1,1 @@
+g++ -Wall -fexceptions -g -I/home/mkd/workspace/LinkedLists/include -c /home/mkd/workspace/LinkedLists/src/BasicLinkedList.cpp -c /home/mkd/workspace/LinkedLists/main.cpp
