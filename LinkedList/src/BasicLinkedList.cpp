@@ -30,8 +30,7 @@ struct node *tail;
 }*/
 
 template<typename Type_name>
-BasicLinkedList<Type_name>::~BasicLinkedList()
-{
+BasicLinkedList<Type_name>::~BasicLinkedList(){
     //dtor
     while( list->next != NULL )
     {

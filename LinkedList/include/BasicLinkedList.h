@@ -5,14 +5,14 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
 //template <class Type> extern BasicLinkedList<Type>;
 //template <class Type> extern void add ( Type new_data );
 
-template <class Type> class BasicLinkedList
-{
+template <class Type> class BasicLinkedList {
     public:
         typedef   Type       Type_name;
 
@@ -28,16 +28,14 @@ template <class Type> class BasicLinkedList
         ////////////////////////////////
         //Constructors
         //
-        BasicLinkedList()
-        {
+        BasicLinkedList() {
             list = NULL;
             head = NULL;
             tail = NULL;
         }
 
         //Copy c'ctor
-        BasicLinkedList ( const BasicLinkedList<Type_name> &__other_object__ )
-        {
+        BasicLinkedList ( const BasicLinkedList<Type_name> &__other_object__ ) {
             list = NULL;
             head = NULL;
             tail = NULL;
@@ -45,11 +43,9 @@ template <class Type> class BasicLinkedList
         }
 
         //Made virtual for possible child classes using this class
-        virtual ~BasicLinkedList()
-        {
+        virtual ~BasicLinkedList() {
             node_ptr del_node = list;
-            while( list != NULL )
-            {
+            while( list != NULL ) {
                 del_node = list;
                 list = list->next;
                 free( del_node );
@@ -72,8 +68,7 @@ template <class Type> class BasicLinkedList
 
         //Need to add the following for operator overloading
         //=, ==, []
-        BasicLinkedList<Type_name>& operator=( const BasicLinkedList<Type_name> &__other_object__ )
-        {
+        BasicLinkedList<Type_name>& operator=( const BasicLinkedList<Type_name> &__other_object__ ) {
             if( this == &__other_object__ )
                 return *this;
 
@@ -114,15 +109,12 @@ template <class Type> class BasicLinkedList
             list = head;
             return ret;
             */
-        }
+        //}
 
         /*TODO: Finish implementing*/
         bool operator==( const BasicLinkedList<Type_name> &__other_object )
         {
             bool isEquals = false;
-
-
-
             return isEquals;
         }
 
@@ -143,10 +135,8 @@ template <class Type> class BasicLinkedList
 }; // END OF BASICLINKEDLIST CLASS HEADER DEF
 
 template<typename Type_name>
-void BasicLinkedList<Type_name>::copy_list_internal( const BasicLinkedList<Type_name> &__other_object_to_copy_from__ )
-{
-    while( __other_object_to_copy_from__.list != NULL )
-    {
+void BasicLinkedList<Type_name>::copy_list_internal( const BasicLinkedList<Type_name> &__other_object_to_copy_from__ ) {
+    while( __other_object_to_copy_from__.list != NULL ) {
         add( __other_object_to_copy_from__.list->data );
 
         __other_object_to_copy_from__.list = __other_object_to_copy_from__.list->next;
@@ -160,18 +150,15 @@ void BasicLinkedList<Type_name>::copy_list_internal( const BasicLinkedList<Type_
 }
 
 template<typename Type_name>
-void BasicLinkedList<Type_name>::add( Type_name new_data )
-{
+void BasicLinkedList<Type_name>::add( Type_name new_data ) {
     add( &list, new_data );
 }
 
 template<typename Type_name>
-void BasicLinkedList<Type_name>::add( struct node **head_ref, Type_name new_data )
-{
+void BasicLinkedList<Type_name>::add( struct node **head_ref, Type_name new_data ) {
     struct node *new_node = ( struct node* ) malloc( sizeof( struct node ) );
 
-    if ( head == NULL && list == NULL )
-    {
+    if ( head == NULL && list == NULL ) {
         //First item in the list
         new_node->data = new_data;
         new_node->next = NULL;
@@ -195,8 +182,7 @@ void BasicLinkedList<Type_name>::add( struct node **head_ref, Type_name new_data
 }
 
 template<typename Type_name>
-bool BasicLinkedList<Type_name>::push( Type_name new_data )
-{
+bool BasicLinkedList<Type_name>::push( Type_name new_data ) {
     return push( &list, new_data );
 }
 
@@ -204,8 +190,7 @@ bool BasicLinkedList<Type_name>::push( Type_name new_data )
 * push a new node to the list
 */
 template<typename Type_name>
-bool BasicLinkedList<Type_name>::push( struct node **head_ref, Type_name new_data )
-{
+bool BasicLinkedList<Type_name>::push( struct node **head_ref, Type_name new_data ) {
     struct node* new_node = ( struct node* ) malloc( sizeof( struct node ) );
 
     if( !new_node )
@@ -227,8 +212,7 @@ bool BasicLinkedList<Type_name>::push( struct node **head_ref, Type_name new_dat
 * Takes off the first element of the list
 */
 template<typename Type_name>
-Type_name BasicLinkedList<Type_name>::pop()
-{
+Type_name BasicLinkedList<Type_name>::pop() {
     Type_name popped_item = NULL;
 
     if ( list != head )
@@ -248,8 +232,7 @@ Type_name BasicLinkedList<Type_name>::pop()
 }
 
 template<typename Type_name>
-Type_name BasicLinkedList<Type_name>::getValue( const usingn_int __index__ )
-{
+Type_name BasicLinkedList<Type_name>::getValue( const usingn_int __index__ ) {
     Type_name ret_data = NULL;
 
     if( list != head )
@@ -276,8 +259,7 @@ Type_name BasicLinkedList<Type_name>::getValue( const usingn_int __index__ )
 }
 
 template<typename Type_name>
-size_t BasicLinkedList<Type_name>::size( ) const
-{
+size_t BasicLinkedList<Type_name>::size( ) const {
     if ( list != head ) //Make sure that the pointer for list is at the beginning
         list = head;
 
@@ -294,8 +276,7 @@ size_t BasicLinkedList<Type_name>::size( ) const
 }
 
 template<typename Type_name>
-void BasicLinkedList<Type_name>::print() const
-{
+void BasicLinkedList<Type_name>::print() const {
     if ( list != head ) //Make sure that the pointer for list is at the beginning
         list = head;
 
