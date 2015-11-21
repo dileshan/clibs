@@ -12,14 +12,12 @@ class Signal_init
         bool sigint_was_hit;
         bool sigabrt_was_hit;
 
-        Signal_init ( ){ sigint_was_hit = false; sigabrt_was_hit = false; };
-        Signal_init ( int type_sig, __sighandler_t __func )
-        {
+        Signal_init ( ) { sigint_was_hit = false; sigabrt_was_hit = false; };
+        Signal_init ( int type_sig, __p_sig_fn_t __func ) {
             signal( type_sig, __func );
         }
 
-        virtual~Signal_init()
-        {
+        virtual~Signal_init(){
         }
 
 };

@@ -9,20 +9,25 @@
 
 using namespace std;
 
-//template <class Type> extern BasicLinkedList<Type>;
-//template <class Type> extern void add ( Type new_data );
-
+/***
+ * Class BasicLinkedList uses simple templating (only of primitive data types)
+ * In future implementations will use Allocator to keep any object in memory or maintaining a void pointer.
+ *
+ * This BasicLinkedList is modified to behave like a list, the subscript modifier is overloaded to "pretend" that
+ * it has random access, but really does a linear search on the list with O(n) running time.
+ *
+ *
+ */
 template <class Type> class BasicLinkedList {
     public:
-        typedef   Type       Type_name;
+        typedef   Type       TypeName;
 
         struct node {
-            Type_name data; //data
+            TypeName data; //data
             struct node *next;
         };
 
         typedef struct node* iterator;
-        typedef struct node* node_ptr;
         typedef unsigned int usingn_int;
 
         ////////////////////////////////
@@ -35,7 +40,7 @@ template <class Type> class BasicLinkedList {
         }
 
         //Copy c'ctor
-        BasicLinkedList ( const BasicLinkedList<Type_name> &__other_object__ ) {
+        BasicLinkedList ( const BasicLinkedList<TypeName> &__other_object__ ) {
             list = NULL;
             head = NULL;
             tail = NULL;
@@ -55,20 +60,20 @@ template <class Type> class BasicLinkedList {
         //////////////////////////////////
 
         //Modifiers of the linked list
-        void      add        ( Type_name new_data );
-        void      add        ( struct node **head_ref, Type_name new_data );
-        bool      push       ( Type_name new_data );
-        bool      push       ( struct node **new_node, Type_name new_data );
+        void      add        ( TypeName new_data );
+        void      add        ( struct node **head_ref, TypeName new_data );
+        bool      push       ( TypeName new_data );
+        bool      push       ( struct node **new_node, TypeName new_data );
 
-        Type_name  pop        ();
-        Type_name  getValue   ( const usingn_int __index__ );
+        TypeName pop        ();
+        TypeName getValue   (const usingn_int __index__ );
 
         size_t    size() const;
         void      print() const;
 
         //Need to add the following for operator overloading
         //=, ==, []
-        BasicLinkedList<Type_name>& operator=( const BasicLinkedList<Type_name> &__other_object__ ) {
+        BasicLinkedList<TypeName>& operator=(const BasicLinkedList<TypeName> &__other_object__ ) {
             if( this == &__other_object__ )
                 return *this;
 
@@ -80,25 +85,26 @@ template <class Type> class BasicLinkedList {
             return *this;
         }
 
-        /*
-        Type_name& operator[]( const usingn_int __index__ )
+        TypeName operator[]( const usingn_int __index__ )
         {
             assert( ( __index__ >= 0 ) && ( __index__ <= size()-1 ) );
 
             if ( list != head )
                 list = head;
 
-            iterator _pl = begin() + __index__;
+            if ( __index__ == 0 ) {
+                return head->data;
+            }
 
-            return _pl->data;
+            if ( __index__ == size()-1) {
+                return tail->data;
+            }
 
             unsigned int index = 0;
-            Type_name ret = -1;
+            TypeName ret = -1;
 
-            while ( list != NULL )
-            {
-                if ( index == __index__ )
-                {
+            while ( list != NULL ) {
+                if ( index == __index__ ) {
                     ret = list->data;
                     break;
                 }
@@ -108,14 +114,36 @@ template <class Type> class BasicLinkedList {
 
             list = head;
             return ret;
-            */
-        //}
+        }
 
-        /*TODO: Finish implementing*/
-        bool operator==( const BasicLinkedList<Type_name> &__other_object )
-        {
-            bool isEquals = false;
-            return isEquals;
+        bool operator==( const BasicLinkedList<TypeName> &__other_object ) {
+            bool equals = true;
+
+            if( __other_object.list == NULL ) {
+                return false;
+            }
+
+            if( listSize != __other_object.size() ){
+                return false;
+            }
+
+            if ( list != head )
+                list = head;
+
+            while( list != NULL ) {
+                if( list->data != __other_object.list->data){
+                    equals = false;
+                    break;
+                }
+                list = list->next;
+                __other_object.list = __other_object.list->next;
+            }
+
+            //reset lists
+            list = head;
+            __other_object.list = __other_object.head;
+
+            return equals;
         }
 
     protected:
@@ -123,19 +151,21 @@ template <class Type> class BasicLinkedList {
         iterator end() { return tail; }
 
     private:
-
         /**
         * Is type mutable so that the copy will iterate
         */
+        typedef struct node* node_ptr;
         mutable node_ptr list;
         node_ptr head;
         node_ptr tail;
 
-        void copy_list_internal( const BasicLinkedList<Type_name> &__other_object_to_copy_from__ );
+        size_t listSize = 0;
+
+        void copy_list_internal( const BasicLinkedList<TypeName> &__other_object_to_copy_from__ );
 }; // END OF BASICLINKEDLIST CLASS HEADER DEF
 
-template<typename Type_name>
-void BasicLinkedList<Type_name>::copy_list_internal( const BasicLinkedList<Type_name> &__other_object_to_copy_from__ ) {
+template<typename TypeName>
+void BasicLinkedList<TypeName>::copy_list_internal( const BasicLinkedList<TypeName> &__other_object_to_copy_from__ ) {
     while( __other_object_to_copy_from__.list != NULL ) {
         add( __other_object_to_copy_from__.list->data );
 
@@ -149,13 +179,13 @@ void BasicLinkedList<Type_name>::copy_list_internal( const BasicLinkedList<Type_
     assert( head == list );
 }
 
-template<typename Type_name>
-void BasicLinkedList<Type_name>::add( Type_name new_data ) {
+template<typename TypeName>
+void BasicLinkedList<TypeName>::add( TypeName new_data ) {
     add( &list, new_data );
 }
 
-template<typename Type_name>
-void BasicLinkedList<Type_name>::add( struct node **head_ref, Type_name new_data ) {
+template<typename TypeName>
+void BasicLinkedList<TypeName>::add( struct node **head_ref, TypeName new_data ) {
     struct node *new_node = ( struct node* ) malloc( sizeof( struct node ) );
 
     if ( head == NULL && list == NULL ) {
@@ -179,18 +209,19 @@ void BasicLinkedList<Type_name>::add( struct node **head_ref, Type_name new_data
     assert( head != NULL );
     assert( list != NULL );
     assert( head == list );
+    listSize++;
 }
 
-template<typename Type_name>
-bool BasicLinkedList<Type_name>::push( Type_name new_data ) {
+template<typename TypeName>
+bool BasicLinkedList<TypeName>::push( TypeName new_data ) {
     return push( &list, new_data );
 }
 
 /**
 * push a new node to the list
 */
-template<typename Type_name>
-bool BasicLinkedList<Type_name>::push( struct node **head_ref, Type_name new_data ) {
+template<typename TypeName>
+bool BasicLinkedList<TypeName>::push( struct node **head_ref, TypeName new_data ) {
     struct node* new_node = ( struct node* ) malloc( sizeof( struct node ) );
 
     if( !new_node )
@@ -205,15 +236,16 @@ bool BasicLinkedList<Type_name>::push( struct node **head_ref, Type_name new_dat
         tail = head;
 
     assert( new_node == head );
+    listSize++;
     return true;
 }
 
 /**
 * Takes off the first element of the list
 */
-template<typename Type_name>
-Type_name BasicLinkedList<Type_name>::pop() {
-    Type_name popped_item = NULL;
+template<typename TypeName>
+TypeName BasicLinkedList<TypeName>::pop() {
+    TypeName popped_item = NULL;
 
     if ( list != head )
         list = head;
@@ -228,12 +260,13 @@ Type_name BasicLinkedList<Type_name>::pop() {
     list = tmp->next;
     head = list;
 
+    listSize--;
     return popped_item;
 }
 
-template<typename Type_name>
-Type_name BasicLinkedList<Type_name>::getValue( const usingn_int __index__ ) {
-    Type_name ret_data = NULL;
+template<typename TypeName>
+TypeName BasicLinkedList<TypeName>::getValue( const usingn_int __index__ ) {
+    TypeName ret_data = NULL;
 
     if( list != head )
         list = head;
@@ -242,10 +275,8 @@ Type_name BasicLinkedList<Type_name>::getValue( const usingn_int __index__ ) {
         return ret_data;
 
     usingn_int temp_index = 0;
-    while( list != NULL )
-    {
-        if( temp_index == __index__ )
-        {
+    while( list != NULL ) {
+        if( temp_index == __index__ ) {
             ret_data = list->data;
             break;
         }
@@ -254,34 +285,20 @@ Type_name BasicLinkedList<Type_name>::getValue( const usingn_int __index__ ) {
     }
 
     list = head;
-
     return ret_data;
 }
 
-template<typename Type_name>
-size_t BasicLinkedList<Type_name>::size( ) const {
-    if ( list != head ) //Make sure that the pointer for list is at the beginning
-        list = head;
-
-    size_t sz = 0;
-    while( list != NULL )
-    {
-        sz++;
-        list = list->next;
-    }
-
-    list = head;
-
-    return sz;
+template<typename TypeName>
+size_t BasicLinkedList<TypeName>::size( ) const {
+    return listSize;
 }
 
-template<typename Type_name>
-void BasicLinkedList<Type_name>::print() const {
+template<typename TypeName>
+void BasicLinkedList<TypeName>::print() const {
     if ( list != head ) //Make sure that the pointer for list is at the beginning
         list = head;
 
-    while( list != NULL )
-    {
+    while( list != NULL ) {
         printf( "%d ", list->data );
         list = list->next;
     }

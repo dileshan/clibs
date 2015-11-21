@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "BasicLinkedList.h"
+#include "../include/BasicLinkedList.h"
 
 #ifdef NO_BUILD
 
@@ -9,7 +9,7 @@ struct node *list;
 struct node *head;
 struct node *tail;
 
-/*template<typename Type_name> BasicLinkedList<Type_name>::BasicLinkedList()
+/*template<typename TypeName> BasicLinkedList<TypeName>::BasicLinkedList()
 {
     //ctor
     list = NULL;
@@ -29,8 +29,8 @@ struct node *tail;
     }
 }*/
 
-template<typename Type_name>
-BasicLinkedList<Type_name>::~BasicLinkedList(){
+template<typename TypeName>
+BasicLinkedList<TypeName>::~BasicLinkedList(){
     //dtor
     while( list->next != NULL )
     {
@@ -46,8 +46,8 @@ BasicLinkedList<Type_name>::~BasicLinkedList(){
     return *this;
 }*/
 
-template<typename Type_name>
-BasicLinkedList<Type_name>& BasicLinkedList<Type_name>::operator= ( const BasicLinkedList<Type_name> &__other_object__ )
+template<typename TypeName>
+BasicLinkedList<TypeName>& BasicLinkedList<TypeName>::operator= ( const BasicLinkedList<TypeName> &__other_object__ )
 {
     struct node *previous_node = NULL;
     while( __other_object__.list->next != NULL )
@@ -70,14 +70,14 @@ BasicLinkedList<Type_name>& BasicLinkedList<Type_name>::operator= ( const BasicL
     return *this;
 }
 
-template<typename Type_name>
-void BasicLinkedList<Type_name>::add( Type_name new_data )
+template<typename TypeName>
+void BasicLinkedList<TypeName>::add( TypeName new_data )
 {
     add( &list, new_data );
 }
 
-template<typename Type_name>
-void BasicLinkedList<Type_name>::add( struct node **head_ref, Type_name new_data )
+template<typename TypeName>
+void BasicLinkedList<TypeName>::add( struct node **head_ref, TypeName new_data )
 {
     struct node *new_node = ( struct node* ) malloc( sizeof( struct node ) );
     new_node->data = new_data;
@@ -90,8 +90,8 @@ void BasicLinkedList<Type_name>::add( struct node **head_ref, Type_name new_data
 
 }
 
-template<typename Type_name>
-void BasicLinkedList<Type_name>::push( Type_name new_data )
+template<typename TypeName>
+void BasicLinkedList<TypeName>::push( TypeName new_data )
 {
     push( &list, new_data );
 }
@@ -99,8 +99,8 @@ void BasicLinkedList<Type_name>::push( Type_name new_data )
 /**
 * push a new node to the list
 */
-template<typename Type_name>
-void BasicLinkedList<Type_name>::push( struct node **head_ref, Type_name new_data )
+template<typename TypeName>
+void BasicLinkedList<TypeName>::push( struct node **head_ref, TypeName new_data )
 {
     struct node* new_node = ( struct node* ) malloc( sizeof( struct node ) );
     new_node->data = new_data;
@@ -117,10 +117,10 @@ void BasicLinkedList<Type_name>::push( struct node **head_ref, Type_name new_dat
 /**
 * Takes off the first element of the list
 */
-template<typename Type_name>
-Type_name BasicLinkedList<Type_name>::pop()
+template<typename TypeName>
+TypeName BasicLinkedList<TypeName>::pop()
 {
-    Type_name first_element_data;
+    TypeName first_element_data;
 
     if ( list != head )
         list = head;
@@ -140,8 +140,8 @@ Type_name BasicLinkedList<Type_name>::pop()
     return first_element_data;
 }
 
-template<typename Type_name>
-size_t BasicLinkedList<Type_name>::size( )
+template<typename TypeName>
+size_t BasicLinkedList<TypeName>::size( )
 {
     if ( list != head ) //Make sure that the pointer for list is at the beginning
         list = head;
@@ -158,8 +158,8 @@ size_t BasicLinkedList<Type_name>::size( )
     return sz;
 }
 
-template<typename Type_name>
-void BasicLinkedList<Type_name>::print()
+template<typename TypeName>
+void BasicLinkedList<TypeName>::print()
 {
     if ( list != head ) //Make sure that the pointer for list is at the beginning
         list = head;

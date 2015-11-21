@@ -1,9 +1,9 @@
 #include <vector>
 #include <string>
 
-#include "BasicLinkedList.h"
-#include "signal_handler.h"
-#include "node.h"
+#include "include/BasicLinkedList.h"
+#include "include/signal_handler.h"
+#include "include/node.h"
 
 //extern template class BasicLinkedList<int>;
 //template <class Type> extern BasicLinkedList<Type>;
@@ -64,8 +64,8 @@ int main()
 
     assert( copyIntegerList[ copyIntegerList.size()-1 ] == 10 );
 
-    int size1 = copyIntegerList.size();
-    int size2 = integerList.size();
+    size_t size1 = copyIntegerList.size();
+    size_t size2 = integerList.size();
     assert( size1 != size2 );
 
 
@@ -111,8 +111,7 @@ int main()
     BasicLinkedList<int> test4LinkedList1;
     BasicLinkedList<int> test4LinkedList2;
 
-    for( int i = 1; i <= 10; i++ )
-    {
+    for( int i = 1; i <= 10; i++ ) {
         test4LinkedList1.push( i );
         test4LinkedList2.push( i );
     }
