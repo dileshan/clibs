@@ -2,6 +2,7 @@
 #include <string>
 
 #include "include/BasicLinkedList.h"
+#include "include/Stack.h"
 #include "include/signal_handler.h"
 #include "include/node.h"
 
@@ -46,8 +47,7 @@ int main()
     printf( "-----------------------------------\n" );
     printf( "Testing basic object copy:\n" );
 
-    for ( int i = 1; i <= 6; i++ )
-    {
+    for ( int i = 1; i <= 6; i++ ) {
         //IntegerListPtr->push( i );
         integerList.push(i);
     }
@@ -120,6 +120,32 @@ int main()
     bool compareTest1 = ( test4LinkedList1 == test4LinkedList2 );
     printf( "%s\n", ( compareTest1 ) ? "PASS" : "FAILED" );
     assert( compareTest1 );
+
+    printf("\nTesting floats:\n");
+    BasicLinkedList<float> testFloats;
+
+    testFloats.push(2.3);
+    testFloats.push(302.8);
+    testFloats.push(6.37);
+
+    testFloats.print();
+
+    printf("\nTesting Stack class:\n");
+    //Testing stack
+    Stack<int> stack;
+    stack.push(5);
+    stack.push(4);
+    stack.push(3);
+    stack.push(2);
+    stack.push(1);
+    stack.print();
+
+    printf("Testing a stack of strings:\n");
+    Stack<std::string> stringStack;
+    stringStack.push("This");
+    stringStack.push("is");
+    stringStack.push("stack");
+    stringStack.print();
 
     return 0;
 }
